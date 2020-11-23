@@ -25,13 +25,13 @@ class CalendarsController < ApplicationController
     @todays_date = Date.today
     # 例)今日が2月1日の場合・・・ Date.today.day => 1日
 
-    @week_days = []
+    @week_days = [] #この配列が、eachメソッドにかかって、並んでいく。
 
     plans = Plan.where(date: @todays_date..@todays_date + 6)
 
-    7.times do |x|
-      today_plans = []
-      plan = plans.map do |plan|
+    7.times do |x| # 曜日ごとのデータを、DBから呼び出す
+      today_plans = [] #plan欄の並び順を決める配列
+      plan = plans.map do |plan| # 曜日に合わせたplanを、今日の曜日から順に追加していく
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
 
@@ -41,7 +41,7 @@ class CalendarsController < ApplicationController
       end
 
       days = { month: (@todays_date + x).month, date: (@todays_date + x).day, plans: today_plans, wday: wdays[wday_num + x]}
-      @week_days.push(days)
+      @week_days.push(days) # 今日の曜日から順に、配列の末尾から加えていく。→今日の日付が最初になるので、今日の日付から順に並んでいく
     end
 
   end
